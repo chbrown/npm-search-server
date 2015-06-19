@@ -34,7 +34,8 @@ function main() {
     })
         .default({
         hostname: process.env.HOSTNAME || '127.0.0.1',
-        port: parseInt(process.env.PORT, 10) || 8080,
+        port: parseInt(process.env.PORT, 10) || 80,
+        verbose: !!process.env.VERBOSE,
     })
         .boolean(['force', 'help', 'verbose', 'version']);
     var argv = argvparser.argv;
