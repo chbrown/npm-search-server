@@ -6,41 +6,47 @@ var database = require('./database');
 var package_json = require('./package.json');
 var logger = require('loge');
 var R = new Router();
-/** GET /api/packages
+/** GET /packages
   q=some+query
   size=100
-  sort=-_score
+  downloadFactor=0.1
 Show all packages matching a basic full text query
 */
-R.get(/^\/api\/packages\?/, function (req, res) {
+R.get(/^\/packages\?/, function (req, res) {
     var urlObj = url.parse(req.url, true);
+    var q = urlObj.query.q;
     var size = parseInt(urlObj.query.size || '100', 10) || 100;
-    var sort = {};
-    var _a = (urlObj.query.sort || '-_score').match(/^([-+])?(.+)$/), full_match = _a[0], sort_direction = _a[1], sort_key = _a[2];
-    sort[sort_key] = (sort_direction === '-') ? 'desc' : 'asc';
+    var downloadsFactor = parseFloat(urlObj.query.downloadsFactor || '0.1') || 0.1;
     database.client.search({
         index: 'npm',
         type: 'packages',
         body: {
-            query: {
-                filtered: {
-                    filter: {
-                        exists: {
+            // leave the body JSON-ish for easier debugging
+            "query": {
+                "function_score": {
+                    "functions": [{
+                            "field_value_factor": {
+                                "field": "averageDownloadsPerDay",
+                                "missing": 1,
+                                "factor": downloadsFactor,
+                                "modifier": "ln1p"
+                            }
+                        }],
+                    "filter": {
+                        "exists": {
                             // exclude unpublished (=unversioned) packages
-                            field: 'modified'
-                        },
+                            "field": "modified"
+                        }
                     },
-                    query: {
-                        match: {
-                            _all: urlObj.query.q,
-                        },
-                    },
-                },
+                    "query": {
+                        "match": {
+                            "_all": q
+                        }
+                    }
+                }
             },
-            size: size,
-            sort: [
-                sort
-            ],
+            // "sort": [sort], // defaults to _score
+            "size": size
         },
     }, function (err, result) {
         if (err)
@@ -52,10 +58,10 @@ R.get(/^\/api\/packages\?/, function (req, res) {
         res.json(packages);
     });
 });
-/** GET /api/packages/:package_name
+/** GET /packages/:package_name
 Show single package details
 */
-R.get(/^\/api\/packages\/(.+)$/, function (req, res, m) {
+R.get(/^\/packages\/(.+)$/, function (req, res, m) {
     var package_name = m[1];
     database.client.get({
         index: 'npm',
