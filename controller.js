@@ -3,6 +3,7 @@ var url = require('url');
 var _ = require('lodash');
 var Router = require('regex-router');
 var database = require('./database');
+var package_json = require('./package.json');
 var logger = require('loge');
 var R = new Router();
 /** GET /api/packages
@@ -65,5 +66,19 @@ R.get(/^\/api\/packages\/(.+)$/, function (req, res, m) {
             return res.error(err, req.headers);
         res.json(result._source);
     });
+});
+/** GET /info
+Show npm-search-server package metadata
+*/
+R.get(/^\/info$/, function (req, res, m) {
+    var info = {
+        name: package_json.name,
+        version: package_json.version,
+        description: package_json.description,
+        homepage: package_json.homepage,
+        author: package_json.author,
+        license: package_json.license,
+    };
+    res.json(info);
 });
 module.exports = R;

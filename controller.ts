@@ -6,6 +6,7 @@ import Router = require('regex-router');
 import registry = require('./registry');
 import database = require('./database');
 
+var package_json = require('./package.json');
 var logger = require('loge');
 
 var R = new Router();
@@ -74,6 +75,21 @@ R.get(/^\/api\/packages\/(.+)$/, (req, res: any, m) => {
 
     res.json(result._source);
   });
+});
+
+/** GET /info
+Show npm-search-server package metadata
+*/
+R.get(/^\/info$/, (req, res: any, m) => {
+  var info = {
+    name: package_json.name,
+    version: package_json.version,
+    description: package_json.description,
+    homepage: package_json.homepage,
+    author: package_json.author,
+    license: package_json.license,
+  };
+  res.json(info);
 });
 
 export = R;
