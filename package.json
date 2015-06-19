@@ -1,0 +1,34 @@
+{
+  "name": "npm-search-server",
+  "version": "0.0.1",
+  "description": "NPM registry API ElasticSearch with download counts",
+  "keywords": [
+    "npm",
+    "download",
+    "counts",
+    "history"
+  ],
+  "homepage": "https://github.com/chbrown/npm-search-server",
+  "repository": "git://github.com/chbrown/npm-search-server.git",
+  "license": "MIT",
+  "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
+  "dependencies": {
+    "async": "*",
+    "elasticsearch": "*",
+    "http-enhanced": "*",
+    "lodash": "*",
+    "loge": "*",
+    "regex-router": "*",
+    "request": "*",
+    "yargs": "*"
+  },
+  "devDependencies": {
+    "typescript": "*"
+  },
+  "bin": {
+    "npm-search-server": "bin"
+  },
+  "scripts": {
+    "start": "node bin"
+  }
+}
