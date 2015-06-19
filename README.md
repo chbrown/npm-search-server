@@ -6,7 +6,7 @@ Also, [npm2es](https://github.com/solids/npm2es) might be useful? Has CouchDB ->
 
 I'm not sure what compelling reason there is to use [npm-registry-client](https://github.com/npm/npm-registry-client) -- it looks like it's just a wrapper around request with named functions for a few of the registry's endpoints.
 
-The registry API desperately lacks documentation other than the npm source code, but the api API has [better documentation](https://github.com/npm/download-counts).
+The registry API desperately lacks documentation other than the npm source code, but the downloads-count API has [better documentation](https://github.com/npm/download-counts).
 
 
 ## Environment
@@ -31,7 +31,7 @@ It also expects a GitHub API token in an environment variable called `GITHUB_TOK
 ## Docker config
 
     docker run -d --name elasticsearch -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 dockerfile/elasticsearch
-    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-search-server
+    docker run -d --name app -p 80:80 -e VERBOSE=1 --link elasticsearch:elasticsearch --restart always chbrown/npm-search-server
 
 If you want to make sure you're running the latest `npm-search-server` image:
 
