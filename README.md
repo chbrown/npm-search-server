@@ -9,15 +9,6 @@ I'm not sure what compelling reason there is to use [npm-registry-client](https:
 The registry API desperately lacks documentation other than the npm source code, but the api API has [better documentation](https://github.com/npm/download-counts).
 
 
-## Development
-
-Start the server like:
-
-    PORT=8700 node_restarter 'node server.js'
-
-A plain `npm start` should work too.
-
-
 ## Environment
 
 The app expects an Elasticsearch server reachable at `elasticsearch:9200`.
@@ -40,22 +31,24 @@ It also expects a GitHub API token in an environment variable called `GITHUB_TOK
 ## Docker config
 
     docker run -d --name elasticsearch -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 dockerfile/elasticsearch
-    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-ui
+    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-search-server
 
-If you want to make sure you're running the latest `npm-ui` image:
+If you want to make sure you're running the latest `npm-search-server` image:
 
-    docker pull chbrown/npm-ui
+    docker pull chbrown/npm-search-server
     docker rm -f app
-    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-ui
+    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-search-server
 
 
-## [machine](https://github.com/docker/machine) initialization
+## [docker-machine](https://github.com/docker/machine) initialization
+
+Use `docker-machine` to start up a small droplet:
 
     export DIGITALOCEAN_ACCESS_TOKEN=n0t4ctua11ymydigital0ceant0k3n
-    machine create -d digitalocean --digitalocean-size=512mb npm-ui
-    $(machine env npm-ui)
+    docker-machine create -d digitalocean --digitalocean-size=512mb npm-search-server
+    eval "$(docker-machine env npm-search-server)"
 
-[Adding swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04):
+You will probably need to [add swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04) for ElasticSearch to function properly. `ssh` in with `docker-machine ssh npm-search-server` and run the following commands:
 
     swapon -s    # check current config
     #dd if=/dev/zero of=/swapfile bs=1G count=4 # slow! fallocate is better.
