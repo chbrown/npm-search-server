@@ -51,10 +51,45 @@ R.get(/^\/packages\?/, function (req, res) {
     }, function (err, result) {
         if (err)
             return res.error(err);
+        /** Full result looks like:
+        {
+          "took": 89,
+          "timed_out": false,
+          "_shards": {
+            "total": 5,
+            "successful": 5,
+            "failed": 0
+          },
+          "hits": {
+            "total": 452,
+            "max_score": 10.770133,
+            "hits": [
+              {
+                "_index": "npm",
+                "_type": "packages",
+                "_id": "immutable",
+                "_score": 10.770133,
+                "_source": {
+                  "name": "immutable",
+                  "modified": "2015-06-17T17:16:22.139Z",
+                  "author": {
+                    "name": "Lee Byron",
+                    "url": "https://github.com/leebyron"
+                  },
+                  ...
+                },
+                ...
+              },
+              ...
+            ]
+          }
+        }
+        */
         var hits = result.hits ? result.hits.hits : [];
         var packages = hits.map(function (hit) {
             return _.extend(hit._source, { _score: hit._score });
         });
+        res.setHeader('Content-Range', "packages 0-" + packages.length + "/" + (result.hits ? result.hits.total : 'NA'));
         res.json(packages);
     });
 });

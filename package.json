@@ -10,8 +10,8 @@
   ],
   "homepage": "https://github.com/chbrown/npm-search-server",
   "repository": "git://github.com/chbrown/npm-search-server.git",
-  "license": "MIT",
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
+  "license": "MIT",
   "dependencies": {
     "async": "*",
     "elasticsearch": "*",
@@ -26,9 +26,9 @@
     "typescript": "*"
   },
   "bin": {
-    "npm-search-server": "bin"
+    "npm-search-server": "bin/npm-search-server"
   },
   "scripts": {
-    "start": "node bin"
+    "start": "node bin/npm-search-server"
   }
 }

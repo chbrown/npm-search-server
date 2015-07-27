@@ -13,6 +13,8 @@ var server = http.createServer((req, res) => {
   // enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Range,Date');
+
   controller.route(req, res);
 });
 server.on('listening', () => {
