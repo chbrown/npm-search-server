@@ -4,7 +4,6 @@ var _ = require('lodash');
 var Router = require('regex-router');
 var database = require('./database');
 var package_json = require('./package.json');
-var logger = require('loge');
 var R = new Router();
 /** GET /packages
   q=some+query

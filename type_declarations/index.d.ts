@@ -5,3 +5,4 @@
 /// <reference path="DefinitelyTyped/yargs/yargs.d.ts" />
 
 /// <reference path="../node_modules/regex-router/regex-router.d.ts" />
+/// <reference path="../node_modules/loge/loge.d.ts" />

@@ -2,12 +2,12 @@
 import url = require('url');
 import _ = require('lodash');
 import Router = require('regex-router');
+import {logger} from 'loge';
 
 import registry = require('./registry');
 import database = require('./database');
 
 var package_json = require('./package.json');
-var logger = require('loge');
 
 var R = new Router();
 

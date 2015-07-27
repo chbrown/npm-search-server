@@ -3,7 +3,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
-var logger = require('loge');
+var loge_1 = require('loge');
 /**
 Returns true for null, undefined, '', [], and {}; otherwise returns false.
 */
@@ -133,18 +133,18 @@ function fetchPackages(updates_only, callback) {
         // updating the locally-cached registry file happens the same way regardless
         // of the updates_only flag
         var url = "https://registry.npmjs.org/-/all/since?stale=update_after&startkey=" + _updated;
-        logger.debug('fetching url: "%s"', url);
+        loge_1.logger.debug('fetching url: "%s"', url);
         request.get({ url: url, json: true }, function (error, response, body) {
             if (error)
                 return callback(error);
-            logger.debug('fetched %d updates', Object.keys(body).length - 1);
+            loge_1.logger.debug('fetched %d updates', Object.keys(body).length - 1);
             // update and save the cached registry, but don't wait for it
             _.extend(registry, body);
             fs.writeFile(REGISTRY_CACHE_FILEPATH, JSON.stringify(registry), { encoding: 'utf8' }, function (error) {
                 if (error) {
-                    return logger.error('failed to save registry: %s', error.message);
+                    return loge_1.logger.error('failed to save registry: %s', error.message);
                 }
-                logger.debug('saved updated registry file');
+                loge_1.logger.debug('saved updated registry file');
             });
             var names = updates_only ? Object.keys(body) : Object.keys(registry);
             var packages = names.filter(function (name) { return name !== '_updated'; }).map(function (name) { return normalizePackage(registry[name]); });

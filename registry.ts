@@ -3,8 +3,7 @@ import _ = require('lodash');
 import fs = require('fs');
 import path = require('path');
 import request = require('request');
-
-var logger = require('loge');
+import {logger} from 'loge';
 
 export interface User {
   name?: string;

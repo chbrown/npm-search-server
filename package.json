@@ -17,7 +17,7 @@
     "elasticsearch": "*",
     "http-enhanced": "*",
     "lodash": "*",
-    "loge": "*",
+    "loge": "^1.0.1",
     "regex-router": "*",
     "request": "*",
     "yargs": "*"

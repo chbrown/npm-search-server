@@ -1,7 +1,7 @@
 /// <reference path="type_declarations/index.d.ts" />
 import yargs = require('yargs');
+import {logger, Level} from 'loge';
 var http = require('http-enhanced');
-var logger = require('loge');
 
 import controller = require('./controller');
 import database = require('./database');
@@ -54,7 +54,7 @@ export function main() {
     });
 
   var argv = argvparser.argv;
-  logger.level = argv.verbose ? 'debug' : 'info';
+  logger.level = argv.verbose ? Level.debug : Level.info;
 
   if (argv.help) {
     yargs.showHelp();

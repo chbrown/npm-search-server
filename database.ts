@@ -1,10 +1,10 @@
 /// <reference path="type_declarations/index.d.ts" />
 import _ = require('lodash');
 import async = require('async');
-import registry = require('./registry');
 import request = require('request');
+import {logger} from 'loge';
 
-var logger = require('loge');
+import registry = require('./registry');
 
 // as of 2015-05-30, DefinitelyTyped doesn't have elasticsearch types
 var elasticsearch = require('elasticsearch');
@@ -33,7 +33,7 @@ function insertPackages(packages: registry.Package[], callback: (error?: Error) 
     }
     logger.debug('inserting batch took %d ms', result.took);
     if (result.errors) {
-      logger.warn('batch insert encountered non-fatal errors: %j', result.errors);
+      logger.warning('batch insert encountered non-fatal errors: %j', result.errors);
     }
     callback();
   });

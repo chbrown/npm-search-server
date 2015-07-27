@@ -1,7 +1,7 @@
 /// <reference path="type_declarations/index.d.ts" />
 var yargs = require('yargs');
+var loge_1 = require('loge');
 var http = require('http-enhanced');
-var logger = require('loge');
 var controller = require('./controller');
 var database = require('./database');
 var InsertOption;
@@ -11,7 +11,7 @@ var InsertOption;
     InsertOption[InsertOption["none"] = 2] = "none";
 })(InsertOption || (InsertOption = {}));
 var server = http.createServer(function (req, res) {
-    logger.debug('%s %s', req.method, req.url);
+    loge_1.logger.debug('%s %s', req.method, req.url);
     // enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
@@ -20,7 +20,7 @@ var server = http.createServer(function (req, res) {
 });
 server.on('listening', function () {
     var address = server.address();
-    logger.info("server listening on http://" + address.address + ":" + address.port);
+    loge_1.logger.info("server listening on http://" + address.address + ":" + address.port);
 });
 function main() {
     var argvparser = yargs
@@ -53,7 +53,7 @@ function main() {
         return true;
     });
     var argv = argvparser.argv;
-    logger.level = argv.verbose ? 'debug' : 'info';
+    loge_1.logger.level = argv.verbose ? loge_1.Level.debug : loge_1.Level.info;
     if (argv.help) {
         yargs.showHelp();
     }
@@ -66,18 +66,18 @@ function main() {
         if (initial_insert !== InsertOption.none) {
             database.update(initial_insert == InsertOption.updates, function (error) {
                 if (error) {
-                    return logger.error('initialization database update failed: %s', error.message);
+                    return loge_1.logger.error('initialization database update failed: %s', error.message);
                 }
-                logger.debug('initialization database update completed successfully');
+                loge_1.logger.debug('initialization database update completed successfully');
             });
         }
         // and once a day thereafter
         setInterval(function () {
             database.update(true, function (error) {
                 if (error) {
-                    return logger.error('interval database update failed: %s', error.message);
+                    return loge_1.logger.error('interval database update failed: %s', error.message);
                 }
-                logger.debug('interval database update completed successfully');
+                loge_1.logger.debug('interval database update completed successfully');
             });
         }, 24 * 60 * 60 * 1000);
         server.listen(argv.port, argv.hostname);
