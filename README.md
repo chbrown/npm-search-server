@@ -30,6 +30,8 @@ It also expects a GitHub API token in an environment variable called `GITHUB_TOK
 
 ## Docker config
 
+This repo is automatically [built](Dockerfile) on [Docker Hub](https://registry.hub.docker.com/u/chbrown/npm-search-server/).
+
     docker run -d --name elasticsearch -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 elasticsearch
     docker run -d --name app -p 80:80 -e VERBOSE=1 --link elasticsearch:elasticsearch --restart always chbrown/npm-search-server
 
@@ -37,7 +39,7 @@ If you want to make sure you're running the latest `npm-search-server` image:
 
     docker pull chbrown/npm-search-server
     docker rm -f app
-    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch chbrown/npm-search-server
+    docker run -d --name app -p 80:80 --link elasticsearch:elasticsearch --restart always chbrown/npm-search-server
 
 
 ## [docker-machine](https://github.com/docker/machine) initialization
