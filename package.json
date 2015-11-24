@@ -9,7 +9,10 @@
     "history"
   ],
   "homepage": "https://github.com/chbrown/npm-search-server",
-  "repository": "git://github.com/chbrown/npm-search-server.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chbrown/npm-search-server.git"
+  },
   "author": "Christopher Brown <io@henrian.com> (http://henrian.com)",
   "license": "MIT",
   "dependencies": {
@@ -17,13 +20,14 @@
     "elasticsearch": "*",
     "http-enhanced": "*",
     "lodash": "*",
-    "loge": "^1.0.1",
+    "loge": "*",
     "regex-router": "*",
     "request": "*",
     "yargs": "*"
   },
   "devDependencies": {
-    "typescript": "*"
+    "declarations": "*",
+    "typescript": "next"
   },
   "bin": {
     "npm-search-server": "bin/npm-search-server"

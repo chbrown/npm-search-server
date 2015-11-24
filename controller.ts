@@ -1,7 +1,6 @@
-/// <reference path="type_declarations/index.d.ts" />
-import url = require('url');
-import _ = require('lodash');
-import Router = require('regex-router');
+import * as url from 'url';
+import * as _ from 'lodash';
+import Router from 'regex-router';
 import {logger} from 'loge';
 
 import registry = require('./registry');

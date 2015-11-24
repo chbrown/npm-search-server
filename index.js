@@ -1,4 +1,3 @@
-/// <reference path="type_declarations/index.d.ts" />
 var yargs = require('yargs');
 var loge_1 = require('loge');
 var http = require('http-enhanced');

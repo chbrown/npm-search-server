@@ -62,4 +62,4 @@ You will probably need to [add swap space](https://www.digitalocean.com/communit
 
 ## License
 
-Copyright 2014-2015 Christopher Brown. [MIT Licensed](http://opensource.org/licenses/MIT).
+Copyright 2014-2015 Christopher Brown. [MIT Licensed](http://chbrown.github.io/licenses/MIT/).

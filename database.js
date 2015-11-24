@@ -1,4 +1,3 @@
-/// <reference path="type_declarations/index.d.ts" />
 var _ = require('lodash');
 var async = require('async');
 var request = require('request');
@@ -13,8 +12,8 @@ exports.client = new elasticsearch.Client({
 function insertPackages(packages, callback) {
     loge_1.logger.debug('inserting batch of %d packages, from %s to %s', packages.length, packages[0].name, packages[packages.length - 1].name);
     var body = [];
-    packages.forEach(function (package) {
-        body.push({ index: { _id: package.name } }, package);
+    packages.forEach(function (pkg) {
+        body.push({ index: { _id: pkg.name } }, pkg);
     });
     exports.client.bulk({
         index: 'npm',
@@ -45,8 +44,8 @@ function mergeAverageDownloadsPerDay(packages, callback) {
         if (error)
             return callback(error);
         loge_1.logger.debug('fetched download counts for %d packages', Object.keys(body).length);
-        packages.forEach(function (package) {
-            package.averageDownloadsPerDay = body[package.name] || 0;
+        packages.forEach(function (pkg) {
+            pkg.averageDownloadsPerDay = body[pkg.name] || 0;
         });
         callback(null, packages);
     });

@@ -1,8 +1,7 @@
-/// <reference path="type_declarations/index.d.ts" />
-import _ = require('lodash');
-import fs = require('fs');
-import path = require('path');
-import request = require('request');
+import * as _ from 'lodash';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as request from 'request';
 import {logger} from 'loge';
 
 export interface User {
@@ -127,40 +126,40 @@ function normalizeUser(obj: any): User {
 
 // elasticsearch doesn't like how flexible CouchDB can be (and how messy the actual NPM database is)
 function normalizePackage(obj: any): Package {
-  var package: Package = {name: obj.name};
-  package.modified = (obj.time || {}).modified;
-  package.author = normalizeUser(obj.author);
-  package.bugs = pick(obj.bugs, ['url', 'email', 'name', 'web', 'mail']);
+  var pkg: Package = {name: obj.name};
+  pkg.modified = (obj.time || {}).modified;
+  pkg.author = normalizeUser(obj.author);
+  pkg.bugs = pick(obj.bugs, ['url', 'email', 'name', 'web', 'mail']);
   // coerce to array
-  package.contributors = [].concat(obj.contributors || []).map(normalizeUser);
-  package.description = obj.description;
+  pkg.contributors = [].concat(obj.contributors || []).map(normalizeUser);
+  pkg.description = obj.description;
   // coalesce to array and pull off first item
-  package.homepage = [].concat(obj.homepage)[0];
+  pkg.homepage = [].concat(obj.homepage)[0];
   if (typeof obj.keywords == 'string') {
     obj.keywords = obj.keywords.split(/,\s*/);
     if (obj.keywords.length == 1) {
       obj.keywords = obj.keywords[0].split(/\s+/);
     }
   }
-  package.keywords = obj.keywords;
-  package.latest = (obj['dist-tags'] || {}).latest;
+  pkg.keywords = obj.keywords;
+  pkg.latest = (obj['dist-tags'] || {}).latest;
   // coalesce to array and pull off first item
   // we can't use a || obj.license at the end of the chain below since
   // `'' || 'y'` returns 'y', which means {type: ""} would result in {type: ""}.
   if (typeof obj.license == 'string') {
     obj.license = {type: obj.license};
   }
-  package.license = pick([].concat(obj.license)[0], ['type', 'name', 'license', 'sourceType', 'url']);
-  package.maintainers = (obj.maintainers || []).map(normalizeUser);
+  pkg.license = pick([].concat(obj.license)[0], ['type', 'name', 'license', 'sourceType', 'url']);
+  pkg.maintainers = (obj.maintainers || []).map(normalizeUser);
   // coalesce to array and pull off first item
-  package.repository = pick([].concat(obj.repository)[0], ['homepage', 'url', 'web', 'url']);
+  pkg.repository = pick([].concat(obj.repository)[0], ['homepage', 'url', 'web', 'url']);
   // clean up
-  for (var key in package) {
-    if (isEmpty(package[key])) {
-      delete package[key];
+  for (var key in pkg) {
+    if (isEmpty(pkg[key])) {
+      delete pkg[key];
     }
   }
-  return package;
+  return pkg;
 }
 
 const REGISTRY_CACHE_FILEPATH = path.join(__dirname, 'npm-registry.json');
@@ -196,7 +195,7 @@ export function fetchPackages(updates_only: boolean, callback: (error: Error, pa
       logger.debug('fetched %d updates', Object.keys(body).length - 1);
 
       // update and save the cached registry, but don't wait for it
-      _.extend(registry, body);
+      _.assign(registry, body);
       fs.writeFile(REGISTRY_CACHE_FILEPATH, JSON.stringify(registry), {encoding: 'utf8'}, (error) => {
         if (error) {
           return logger.error('failed to save registry: %s', error.message);

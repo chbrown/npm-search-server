@@ -1,10 +1,9 @@
-/// <reference path="type_declarations/index.d.ts" />
 var url = require('url');
 var _ = require('lodash');
-var Router = require('regex-router');
+var regex_router_1 = require('regex-router');
 var database = require('./database');
 var package_json = require('./package.json');
-var R = new Router();
+var R = new regex_router_1.default();
 /** GET /packages
   q=some+query
   size=100

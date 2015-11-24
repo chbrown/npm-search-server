@@ -1,7 +1,6 @@
-/// <reference path="type_declarations/index.d.ts" />
-import _ = require('lodash');
-import async = require('async');
-import request = require('request');
+import * as _ from 'lodash';
+import * as async from 'async';
+import * as request from 'request';
 import {logger} from 'loge';
 
 import registry = require('./registry');
@@ -18,8 +17,8 @@ function insertPackages(packages: registry.Package[], callback: (error?: Error) 
     packages[0].name, packages[packages.length - 1].name);
 
   var body = [];
-  packages.forEach(package => {
-    body.push({index: {_id: package.name}}, package);
+  packages.forEach(pkg => {
+    body.push({index: {_id: pkg.name}}, pkg);
   });
 
   client.bulk({
@@ -54,8 +53,8 @@ function mergeAverageDownloadsPerDay(packages: registry.Package[],
 
     logger.debug('fetched download counts for %d packages', Object.keys(body).length);
 
-    packages.forEach(package => {
-      package.averageDownloadsPerDay = body[package.name] || 0;
+    packages.forEach(pkg => {
+      pkg.averageDownloadsPerDay = body[pkg.name] || 0;
     });
 
     callback(null, packages);

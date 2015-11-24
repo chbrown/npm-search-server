@@ -1,5 +1,4 @@
-/// <reference path="type_declarations/index.d.ts" />
-import yargs = require('yargs');
+import * as yargs from 'yargs';
 import {logger, Level} from 'loge';
 var http = require('http-enhanced');
 
